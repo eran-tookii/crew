@@ -14,7 +14,16 @@ Parse the member **name** and **domain description** from the user's input.
 
 If either is missing, ask for them before proceeding.
 
-### 1. Create the member folder
+### 1. Check if member already exists
+
+Use Glob to check if `.claude/team/{name}/` already exists.
+
+If it does, **stop and ask the user**:
+> `{name}` already exists as a crew member. Do you want to overwrite their files? This will replace `SKILL.md`, `context.md`, and `history.md` — all existing context and history will be lost.
+
+Only proceed if the user explicitly confirms. If they say no, abort and tell them they can use `/crew {name}` to activate the existing member.
+
+### 2. Create the member folder
 
 Create `.claude/team/{name}/` if it doesn't exist.
 
