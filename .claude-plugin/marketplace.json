@@ -1,14 +1,8 @@
 {
   "crew": {
     "name": "crew",
-    "description": "View your AI team roster or activate a domain expert. /crew to see all members, /crew [name] [task] to assign a task directly.",
+    "description": "Manage your AI team. /crew = roster, /crew add [name] \"[domain]\" = new member, /crew [name] [task] = assign task.",
     "category": "productivity",
     "path": "skills/crew"
-  },
-  "crew-add": {
-    "name": "crew-add",
-    "description": "Scaffold a new Crew domain expert with context, history, and the two-sided update workflow. /crew-add [name] \"[domain description]\"",
-    "category": "productivity",
-    "path": "skills/crew-add"
   }
 }
