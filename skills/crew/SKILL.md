@@ -64,7 +64,8 @@ user-invocable: false
 2. **Append to `history.md`** — add a dated entry with:
    - What was done and why
    - Which files changed
-   - PR number if available, otherwise branch/commit
+   - Run `git log --oneline -1` and record the commit ID and message
+   - PR number if one exists
    - Any decisions made and their rationale
    - Any gotchas discovered
 ```
