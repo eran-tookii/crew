@@ -1,8 +1,0 @@
-{
-  "crew": {
-    "name": "crew",
-    "description": "Manage your AI team. /crew = roster, /crew add [name] \"[domain]\" = new member, /crew [name] [task] = assign task.",
-    "category": "productivity",
-    "path": "skills/crew"
-  }
-}

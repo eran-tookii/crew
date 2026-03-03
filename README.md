@@ -63,10 +63,8 @@ Context compounds. Ester gets sharper with every task. You never re-brief her.
 
 ### 1. Install the skill
 
-Copy `skills/crew/` into your project's `.claude/skills/`:
-
 ```bash
-cp -r skills/crew /your-project/.claude/skills/crew
+npx skills add eran-tookii/crew
 ```
 
 Then reference it from your `CLAUDE.md`:
@@ -159,9 +157,7 @@ There's no right granularity. The right size is: one person could own this domai
 ```
 crew/
 ├── README.md
-└── skills/
-    └── crew/
-        └── SKILL.md    ← /crew — roster, routing, scaffolding, and /crew who
+└── SKILL.md    ← /crew — roster, routing, scaffolding, and /crew who
 ```
 
 ---
