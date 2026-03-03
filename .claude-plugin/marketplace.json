@@ -1,0 +1,16 @@
+{
+  "name": "crew",
+  "owner": {
+    "name": "Eran Lesser"
+  },
+  "plugins": [
+    {
+      "name": "crew",
+      "source": "./",
+      "description": "Manage your AI team. Domain experts with persistent context, history, and institutional memory.",
+      "version": "1.0.0",
+      "homepage": "https://github.com/eran-tookii/crew",
+      "license": "MIT"
+    }
+  ]
+}

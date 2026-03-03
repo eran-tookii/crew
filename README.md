@@ -62,14 +62,17 @@ Context compounds. Ester gets sharper with every task. You never re-brief her.
 
 ### 1. Install the skill
 
-```bash
-npx skills add eran-tookii/crew
+**Via Claude Code plugin marketplace:**
+
+```
+/plugin marketplace add eran-tookii/crew
+/plugin install crew@crew
 ```
 
-Then reference it from your `CLAUDE.md`:
+**Via skills.sh:**
 
-```markdown
-@.claude/skills/crew/SKILL.md
+```bash
+npx skills add eran-tookii/crew
 ```
 
 ### 2. Add your first crew member
@@ -155,7 +158,12 @@ There's no right granularity. The right size is: one person could own this domai
 ```
 crew/
 ├── README.md
-└── SKILL.md    ← /crew — roster, routing, scaffolding, and /crew who
+├── .claude-plugin/
+│   ├── marketplace.json   ← Claude Code marketplace catalog
+│   └── plugin.json        ← plugin manifest
+└── skills/
+    └── crew/
+        └── SKILL.md       ← /crew skill
 ```
 
 ---
