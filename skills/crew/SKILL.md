@@ -175,14 +175,7 @@ Evergreen knowledge extracted from history: architectural decisions, known gotch
 [Deliberate decisions that might look like bugs or bad patterns — with the reason why]
 ```
 
-### 6. Update MEMORY.md
-
-Find or create the `## Crew` section and add:
-```
-- `/crew {name}` — {DOMAIN}. Context + history in `.claude/team/{name}/`.
-```
-
-### 7. Confirm
+### 6. Confirm
 
 Tell the user what was created, then ask what they'd like to work on.
 
