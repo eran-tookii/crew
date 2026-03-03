@@ -2,21 +2,20 @@
 
 ![Crew](media/crew.svg)
 
-**Give Claude permanent domain ownership — like assigning a ticket to the engineer who knows the codebase.**
+**Software teams have domain owners. Now your AI team does too.**
 
 ---
 
-## The problem
+When I managed software teams, domain ownership was just how things worked. Every developer owned a part of the codebase. Their history with it — the decisions made, the mistakes survived, the patterns that stuck — made them the natural fit for new tasks in that domain. You didn't re-brief them. You just assigned the ticket.
 
-Every Claude session starts blank. You re-explain the architecture, the decisions, the gotchas. You get good output, but none of it sticks. Next task, same thing.
+Working with AI, I wanted the same thing. Four goals:
 
-## The idea
+- **Less time, tokens, and effort** — stop re-explaining context Claude already worked through
+- **Agents that improve after every task** — each run leaves the next one sharper
+- **No repeated mistakes** — hard-won lessons stay in the domain, not lost when the session ends
+- **No loops** — known dead ends are documented, not rediscovered
 
-When you have a task in a domain, you don't brief every engineer. You assign it to the person who owns it. They already know the context, the history, the constraints. They just need the task.
-
-Crew gives you that with Claude.
-
-Each domain expert is a set of files: their current knowledge of the domain, a log of every task they've completed, a record of key decisions, and a skill that activates them. Assign them a task, they orient themselves, do the work, and update their own knowledge before they're done. Next time, they're sharper.
+Crew is that pattern for Claude. Each domain expert is a set of files: their current knowledge of the domain, a log of every task they've completed, and a permanent record of key decisions and gotchas. Assign them a task, they orient themselves, do the work, and update their own knowledge before they're done.
 
 ```
 /crew                              → see your full roster + available commands
