@@ -94,38 +94,7 @@ This creates:
 
 Describe the current state of the domain: key files, architecture, patterns, constraints, gotchas. This is Ester's starting knowledge. One focused session to write it, then she maintains it herself.
 
-### 4. (Recommended) Install the stop hook
-
-The hook blocks Claude from finishing a task if `context.md` was updated but `history.md` wasn't. It's the enforcement mechanism that makes the two-sided workflow actually stick.
-
-```bash
-# Copy the hook into your project
-cp /path/to/crew/hooks/check-crew-history.sh .claude/hooks/check-crew-history.sh
-chmod +x .claude/hooks/check-crew-history.sh
-```
-
-Then add it to `.claude/settings.json`:
-
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/check-crew-history.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-If Claude updates `context.md` and tries to finish without appending to `history.md`, it gets blocked with a clear message telling it exactly which file to update.
-
-### 5. Assign your first task
+### 4. Assign your first task
 
 ```
 /crew ester [your task here]
@@ -189,11 +158,9 @@ There's no right granularity. The right size is: one person could own this domai
 ```
 crew/
 ├── README.md
-├── hooks/
-│   └── check-crew-history.sh   ← Stop hook: enforces history.md is always updated
 └── skills/
     └── crew/
-        └── SKILL.md             ← /crew — roster, routing, scaffolding, and /crew who
+        └── SKILL.md    ← /crew — roster, routing, scaffolding, and /crew who
 ```
 
 ---
