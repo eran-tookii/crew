@@ -196,10 +196,10 @@ Find or create the `## Crew` section and add:
 
 ### 7. Confirm
 
-Tell the user:
-- What was created
-- To fill in `context.md` with the current domain state
-- To run `/crew {name} [task]` to activate
+Tell the user what was created, then ask what they'd like to work on.
+
+Optionally suggest they can bootstrap context by sending {NAME} on an exploration task first, for example:
+> `/crew {name} — look into the project and find areas relevant to your domain '{DOMAIN}'. Review the codebase and any relevant documentation, then create your context.md based on what you find.`
 
 ---
 
