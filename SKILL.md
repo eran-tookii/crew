@@ -1,6 +1,6 @@
 ---
 name: crew
-description: Manage your AI team. /crew = roster, /crew add [name] "[domain]" = new member, /crew [name] [task] = assign task, /crew who = show active member.
+description: Manage your AI team. /crew = roster, /crew add [name] "[domain]" = new member, /crew [name] [task] = assign task.
 metadata:
   compatibility: Claude Code
 ---
@@ -12,7 +12,6 @@ metadata:
 | Arguments | Action |
 |-----------|--------|
 | none | Show roster |
-| `who` | Show currently active crew member |
 | `add [name] "[domain]"` | Scaffold a new crew member |
 | `[name]` | Activate member, ask for task |
 | `[name] [task]` | Activate member with task |
@@ -27,21 +26,10 @@ metadata:
 4. Present a formatted roster
 5. After the roster, show available commands:
    - `/crew` — show roster
-   - `/crew who` — show currently active member
    - `/crew [name]` — activate a member
    - `/crew [name] [task]` — activate a member with a task
    - `/crew add [name] "[domain]"` — scaffold a new member
 6. Ask which member to work with
-
----
-
-## `who` — show active crew member
-
-1. Read `.claude/team/.current` — this file contains the name of the last activated crew member
-2. If the file doesn't exist or is empty, respond: "No crew member is currently active. Use `/crew [name]` to activate one."
-3. If it exists, read `.claude/team/{name}/SKILL.md` to get their `name` and `description` from frontmatter
-4. Show: **Active: {NAME}** — {description}
-5. Optionally show the last entry from their `history.md` as recent context
 
 ---
 
@@ -205,8 +193,7 @@ Optionally suggest they can bootstrap context by sending {NAME} on an exploratio
 
 ## `[name]` or `[name] [task]` — activate a member
 
-1. Write the member's name (lowercase) to `.claude/team/.current` — this enables `/crew who`
-2. Read `.claude/team/{name}/SKILL.md`
-3. Follow its instructions exactly
-4. Treat any remaining text as the task description
-5. If no task was provided, ask the user what they'd like to work on
+1. Read `.claude/team/{name}/SKILL.md`
+2. Follow its instructions exactly
+3. Treat any remaining text as the task description
+4. If no task was provided, ask the user what they'd like to work on
