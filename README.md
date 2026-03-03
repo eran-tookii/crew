@@ -1,5 +1,7 @@
 # Crew
 
+![Crew](media/crew.svg)
+
 **Give Claude permanent domain ownership — like assigning a ticket to the engineer who knows the codebase.**
 
 ---
