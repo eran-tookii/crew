@@ -6,14 +6,14 @@
 
 ---
 
-When I managed software teams, domain ownership was just how things worked. Every developer owned a part of the codebase. Their history with it — the decisions made, the mistakes survived, the patterns that stuck — made them the natural fit for new tasks in that domain. You didn't re-brief them. You just assigned the ticket.
+When I managed software teams, domain ownership was just how things worked. Every developer owned a part of the codebase. Their history with it: the decisions made, the mistakes survived, the patterns that stuck, made them the natural fit for new tasks in that domain. You didn't re-brief them. You just assigned the ticket.
 
 Working with AI, I wanted the same thing. Four goals:
 
-- **Less time, tokens, and effort** — stop re-explaining context Claude already worked through
-- **Agents that improve after every task** — each run leaves the next one sharper
-- **No repeated mistakes** — hard-won lessons stay in the domain, not lost when the session ends
-- **No loops** — known dead ends are documented, not rediscovered
+- **Less time, tokens, and effort.** Stop re-explaining context Claude already worked through.
+- **Agents that improve after every task.** Each run leaves the next one sharper.
+- **No repeated mistakes.** Hard-won lessons stay in the domain, not lost when the session ends.
+- **No loops.** Known dead ends are documented, not rediscovered.
 
 Crew is that pattern for Claude. Each domain expert is a set of files: their current knowledge of the domain, a log of every task they've completed, and a permanent record of key decisions and gotchas. Assign them a task, they orient themselves, do the work, and update their own knowledge before they're done.
 
@@ -41,7 +41,7 @@ Each crew member lives in `.claude/team/{name}/`:
     └── decisions.md  ← permanent record: key decisions, gotchas, things not to undo
 ```
 
-**The loop — what happens on every `/crew ester [task]`:**
+**The loop: what happens on every `/crew ester [task]`:**
 
 ```
 1. Read context.md     → understand the current state
@@ -55,7 +55,7 @@ Each crew member lives in `.claude/team/{name}/`:
 
 Context compounds. Ester gets sharper with every task. You never re-brief her.
 
-**history.md is capped at 10 entries.** When trimmed, important signal is extracted to `decisions.md` first, so nothing valuable is lost — just the narrative bulk.
+**history.md is capped at 10 entries.** When trimmed, important signal is extracted to `decisions.md` first, so nothing valuable is lost, just the narrative bulk.
 
 ---
 
@@ -109,7 +109,7 @@ Describe the current state of the domain: key files, architecture, patterns, con
 |---------|-------------|
 | `/crew` | Show the full roster + available commands |
 | `/crew who` | Show the currently active crew member |
-| `/crew [name]` | Activate a member — they'll ask for the task |
+| `/crew [name]` | Activate a member, they'll ask for the task |
 | `/crew [name] [task]` | Activate a member with a task |
 | `/crew add [name] "[domain]"` | Scaffold a new crew member |
 
@@ -128,13 +128,13 @@ As you add members, the roster grows automatically. No configuration needed.
 
 ## Philosophy
 
-**Context is the asset.** A senior engineer's value isn't just their skills — it's the years of accumulated context about why things are the way they are. Crew externalises that context into files that persist, version, and compound.
+**Context is the asset.** A senior engineer's value isn't just their skills. It's the years of accumulated context about why things are the way they are. Crew externalises that context into files that persist, version, and compound.
 
 **History is the superpower.** `context.md` tells Claude what the domain looks like. `history.md` tells Claude *why*. Without history, Claude might undo a deliberate decision. With it, every task builds on the ones before.
 
-**decisions.md is the permanent record.** History rolls off after 10 entries — the narrative bulk is cheap to lose. The decisions and gotchas are not. `decisions.md` captures that signal permanently, so nothing important is ever trimmed away.
+**decisions.md is the permanent record.** History rolls off after 10 entries. The narrative bulk is cheap to lose. The decisions and gotchas are not. `decisions.md` captures that signal permanently, so nothing important is ever trimmed away.
 
-**Living, not static.** The worst outcome is `context.md` drifting from reality. The two-sided workflow (update after every task) is the mechanism that prevents it. Crew members don't just consume context — they maintain it.
+**Living, not static.** The worst outcome is `context.md` drifting from reality. The two-sided workflow (update after every task) is the mechanism that prevents it. Crew members don't just consume context, they maintain it.
 
 **The analogy holds.** When you assign a task to Ester, you don't re-explain the codebase. When Ester finishes, she updates her mental model. That's exactly what this does.
 
