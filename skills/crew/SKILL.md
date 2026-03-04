@@ -79,6 +79,7 @@ user-invocable: false
    - Extract any important decisions, gotchas, or patterns into `decisions.md` before they are lost
    - Trim `history.md` to the 10 most recent entries
 4. **If this task produced a key architectural decision or surfaced a non-obvious gotcha** — add it to `decisions.md` directly, even if no trimming is needed
+5. **Sign off** — end your response with a single line: `— {name}, {domain}`
 ```
 
 ### 3. Create `.claude/team/{name}/context.md`
@@ -190,3 +191,4 @@ Optionally suggest they can bootstrap context by sending {NAME} on an exploratio
 2. Follow its instructions exactly
 3. Treat any remaining text as the task description
 4. If no task was provided, ask the user what they'd like to work on
+5. When the task is complete, sign off with a single line: `— {name}, {domain}`
