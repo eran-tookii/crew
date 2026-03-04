@@ -139,6 +139,8 @@ As you add members, the roster grows automatically. No configuration needed.
 
 **The analogy holds.** When you assign a task to Ester, you don't re-explain the codebase. When Ester finishes, she updates her mental model. That's exactly what this does.
 
+**Just markdown.** Crew is a single skill file and a set of plain text files per member. No scripts, no background processes, no build steps, no dependencies. Everything is readable, editable, and version-controlled. You can open any file, see exactly what your crew member knows, and change it by hand. The entire system is transparent by design.
+
 ---
 
 ## Adding more members
