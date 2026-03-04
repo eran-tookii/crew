@@ -172,6 +172,31 @@ crew/
 
 ---
 
+## FAQ
+
+**Won't context.md grow forever and blow up the context window?**
+No. Context.md is meant to reflect the *current* state of the domain, not a running log. Each crew member rewrites it after every task, keeping only what's relevant now. Old details are naturally replaced as the domain evolves. If it starts getting long, just trim it yourself — it's plain markdown.
+
+**What happens when history.md fills up?**
+History is capped at 10 entries. When it's trimmed, important signal (key decisions, gotchas, patterns) is extracted to `decisions.md` first. The narrative bulk is discarded, but nothing valuable is lost.
+
+**How many crew members should I have?**
+As many as you have distinct domains. A good rule of thumb: if you'd assign it to a different person on a real team, it's a different crew member. Most projects land somewhere between 2 and 6.
+
+**Can I edit context.md, history.md, or decisions.md by hand?**
+Yes, and you should. These are plain markdown files. If a crew member wrote something wrong, fix it. If context has drifted, update it. The files are the source of truth — there's no hidden state.
+
+**Does this persist across conversations?**
+Yes. Crew member files live in `.claude/team/` inside your project. They survive across conversations, branches, and machines (if you commit them). That's the whole point — context that outlasts a single session.
+
+**Does this use extra tokens?**
+A crew member reads their context, history, and decisions files at the start of each task. That's the overhead — typically a few hundred lines of markdown. It's far less than re-explaining the domain from scratch every time, which is what you'd do without it.
+
+**Can two crew members work on the same task?**
+They can, but it's not the intended pattern. Each member owns a domain. If a task spans domains, assign the part that fits each member's expertise separately. They don't share context with each other — they share context with *you*.
+
+---
+
 ## License
 
 MIT
