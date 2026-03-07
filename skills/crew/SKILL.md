@@ -22,8 +22,8 @@ metadata:
 ## No arguments — show roster
 
 1. Use Glob to find all `.claude/team/*/SKILL.md` files (skip `.claude/team/SKILL.md` itself)
-2. For each, read `name` and `description` from the frontmatter
-3. Read the last entry in their `history.md` to show what they last worked on
+2. For each member, use the Read tool (not Bash) to read their `SKILL.md` and extract `name` and `description` from the frontmatter
+3. For each member, use the Read tool to read their `history.md` and extract the last entry heading and summary to show what they last worked on
 4. Present a formatted roster
 5. After the roster, show available commands:
    - `/crew` — show roster
