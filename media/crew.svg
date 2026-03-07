@@ -42,23 +42,31 @@
     }
     @keyframes wave1Arm {
       0%, 15%, 100% { transform: rotate(0deg); }
-      5%, 10% { transform: rotate(-45deg); }
-      7% { transform: rotate(-35deg); }
+      3%, 12% { transform: rotate(-70deg); }
+      5% { transform: rotate(-55deg); }
+      7% { transform: rotate(-70deg); }
+      9% { transform: rotate(-55deg); }
     }
     @keyframes wave2Arm {
       0%, 30%, 100% { transform: rotate(0deg); }
-      20%, 25% { transform: rotate(-50deg); }
-      22% { transform: rotate(-40deg); }
+      18%, 27% { transform: rotate(-75deg); }
+      20% { transform: rotate(-58deg); }
+      22% { transform: rotate(-75deg); }
+      24% { transform: rotate(-58deg); }
     }
     @keyframes wave3Arm {
       0%, 50%, 100% { transform: rotate(0deg); }
-      40%, 45% { transform: rotate(-45deg); }
-      42% { transform: rotate(-35deg); }
+      38%, 47% { transform: rotate(-70deg); }
+      40% { transform: rotate(-55deg); }
+      42% { transform: rotate(-70deg); }
+      44% { transform: rotate(-55deg); }
     }
     @keyframes wave4Arm {
       0%, 70%, 100% { transform: rotate(0deg); }
-      60%, 65% { transform: rotate(-50deg); }
-      62% { transform: rotate(-40deg); }
+      58%, 67% { transform: rotate(-75deg); }
+      60% { transform: rotate(-58deg); }
+      62% { transform: rotate(-75deg); }
+      64% { transform: rotate(-58deg); }
     }
 
     .sky { fill: #fdf6ec; }
@@ -77,7 +85,78 @@
     .wave-line-2 { fill: #dce7f0; stroke: #8fa8bd; stroke-width: 1; animation: wave2 4.5s ease-in-out 0.5s infinite; }
     .wave-line-3 { fill: #d0dde8; stroke: #8fa8bd; stroke-width: 0.8; animation: wave3 5s ease-in-out 1s infinite; }
 
+    @keyframes wakeDrift1 {
+      0% { opacity: 0.25; transform: translateX(0) scaleX(1); }
+      100% { opacity: 0; transform: translateX(-60px) scaleX(1.4); }
+    }
+    @keyframes wakeDrift2 {
+      0% { opacity: 0.2; transform: translateX(0) scaleX(1); }
+      100% { opacity: 0; transform: translateX(-50px) scaleX(1.3); }
+    }
+    @keyframes wakeDrift3 {
+      0% { opacity: 0.15; transform: translateX(0) scaleX(1); }
+      100% { opacity: 0; transform: translateX(-70px) scaleX(1.5); }
+    }
+    .wake-line {
+      fill: none;
+      stroke: #8fa8bd;
+      stroke-linecap: round;
+    }
+    .wake-1 {
+      stroke-width: 1;
+      animation: wakeDrift1 3s ease-out infinite;
+    }
+    .wake-2 {
+      stroke-width: 0.8;
+      animation: wakeDrift2 3.5s ease-out 0.8s infinite;
+    }
+    .wake-3 {
+      stroke-width: 0.6;
+      animation: wakeDrift3 4s ease-out 1.6s infinite;
+    }
+
     .ship-group { animation: bob 4s ease-in-out infinite; }
+
+    /* Wake behind ship */
+    @keyframes wakeFlow1 {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -40; }
+    }
+    @keyframes wakeFlow2 {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -50; }
+    }
+    @keyframes wakeFlow3 {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -60; }
+    }
+    .wake-line-1 {
+      fill: none;
+      stroke: #8fa8bd;
+      stroke-width: 1;
+      stroke-linecap: round;
+      stroke-dasharray: 12 8;
+      opacity: 0.4;
+      animation: wakeFlow1 2s linear infinite;
+    }
+    .wake-line-2 {
+      fill: none;
+      stroke: #8fa8bd;
+      stroke-width: 0.8;
+      stroke-linecap: round;
+      stroke-dasharray: 10 10;
+      opacity: 0.25;
+      animation: wakeFlow2 2.5s linear infinite;
+    }
+    .wake-line-3 {
+      fill: none;
+      stroke: #8fa8bd;
+      stroke-width: 0.6;
+      stroke-linecap: round;
+      stroke-dasharray: 8 14;
+      opacity: 0.15;
+      animation: wakeFlow3 3s linear infinite;
+    }
     .sail-fill { fill: #fdf6ec; stroke: none; }
     .cloud { animation: cloudDrift 15s ease-in-out infinite alternate; }
 
@@ -150,6 +229,20 @@
   <path class="wave-line-1" d="M0,310 Q100,300 200,310 Q300,320 400,310 Q500,300 600,310 Q700,320 800,310 L800,400 L0,400 Z"/>
   <path class="wave-line-2" d="M0,320 Q100,312 200,320 Q300,328 400,320 Q500,312 600,320 Q700,328 800,320 L800,400 L0,400 Z"/>
   <path class="wave-line-3" d="M0,335 Q100,328 200,335 Q300,342 400,335 Q500,328 600,335 Q700,342 800,335 L800,400 L0,400 Z"/>
+
+  <!-- Wake -->
+  <g>
+    <path class="wake-line wake-1" d="M295,306 Q260,308 230,304 Q200,300 175,303"/>
+    <path class="wake-line wake-2" d="M298,310 Q265,314 235,310 Q205,306 170,310"/>
+    <path class="wake-line wake-3" d="M292,303 Q255,304 225,300 Q195,297 160,300"/>
+  </g>
+
+  <!-- Wake -->
+  <g class="ship-group">
+    <path class="wake-line-1" d="M295,305 Q250,308 190,310 Q140,312 90,311"/>
+    <path class="wake-line-2" d="M295,305 Q240,312 175,318 Q120,322 60,320"/>
+    <path class="wake-line-3" d="M295,305 Q230,315 160,325 Q100,332 30,328"/>
+  </g>
 
   <g class="ship-group">
     <path class="line-bold" d="M280,290 L300,305 L430,305 L445,290"/>
