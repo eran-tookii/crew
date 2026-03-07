@@ -1,3 +1,210 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
-  
+  <style>
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+    @keyframes wave1 {
+      0%, 100% { d: path("M0,310 Q100,300 200,310 Q300,320 400,310 Q500,300 600,310 Q700,320 800,310 L800,400 L0,400 Z"); }
+      50% { d: path("M0,312 Q100,320 200,308 Q300,300 400,312 Q500,320 600,308 Q700,300 800,312 L800,400 L0,400 Z"); }
+    }
+    @keyframes wave2 {
+      0%, 100% { d: path("M0,320 Q100,312 200,320 Q300,328 400,320 Q500,312 600,320 Q700,328 800,320 L800,400 L0,400 Z"); }
+      50% { d: path("M0,322 Q100,328 200,318 Q300,312 400,322 Q500,328 600,318 Q700,312 800,322 L800,400 L0,400 Z"); }
+    }
+    @keyframes wave3 {
+      0%, 100% { d: path("M0,335 Q100,328 200,335 Q300,342 400,335 Q500,328 600,335 Q700,342 800,335 L800,400 L0,400 Z"); }
+      50% { d: path("M0,337 Q100,342 200,333 Q300,328 400,337 Q500,342 600,333 Q700,328 800,337 L800,400 L0,400 Z"); }
+    }
+    @keyframes rayRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes cloudDrift {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(40px); }
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.6; }
+    }
+    @keyframes nodePulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.9; }
+    }
+    @keyframes nodePulseL {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.85; }
+    }
+    @keyframes edgePulse {
+      0%, 100% { opacity: 0.12; }
+      50% { opacity: 0.3; }
+    }
+    @keyframes wave1Arm {
+      0%, 15%, 100% { transform: rotate(0deg); }
+      5%, 10% { transform: rotate(-45deg); }
+      7% { transform: rotate(-35deg); }
+    }
+    @keyframes wave2Arm {
+      0%, 30%, 100% { transform: rotate(0deg); }
+      20%, 25% { transform: rotate(-50deg); }
+      22% { transform: rotate(-40deg); }
+    }
+    @keyframes wave3Arm {
+      0%, 50%, 100% { transform: rotate(0deg); }
+      40%, 45% { transform: rotate(-45deg); }
+      42% { transform: rotate(-35deg); }
+    }
+    @keyframes wave4Arm {
+      0%, 70%, 100% { transform: rotate(0deg); }
+      60%, 65% { transform: rotate(-50deg); }
+      62% { transform: rotate(-40deg); }
+    }
+
+    .sky { fill: #fdf6ec; }
+    .line { fill: none; stroke: #2c3e50; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .line-thin { fill: none; stroke: #2c3e50; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+    .line-bold { fill: none; stroke: #2c3e50; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+    .sun-circle { stroke: #d4a04a; stroke-width: 2; fill: none; }
+    .sun-fill { fill: #fdf6ec; stroke: none; }
+    .sun-rays { transform-origin: 650px 80px; animation: rayRotate 30s linear infinite; }
+    .sun-ray { stroke: #d4a04a; stroke-width: 1.5; fill: none; }
+
+    .horizon { stroke: #b8c6d4; stroke-width: 1; fill: none; }
+
+    .wave-line-1 { fill: #e8eff5; stroke: #8fa8bd; stroke-width: 1.2; animation: wave1 4s ease-in-out infinite; }
+    .wave-line-2 { fill: #dce7f0; stroke: #8fa8bd; stroke-width: 1; animation: wave2 4.5s ease-in-out 0.5s infinite; }
+    .wave-line-3 { fill: #d0dde8; stroke: #8fa8bd; stroke-width: 0.8; animation: wave3 5s ease-in-out 1s infinite; }
+
+    .ship-group { animation: bob 4s ease-in-out infinite; }
+    .sail-fill { fill: #fdf6ec; stroke: none; }
+    .cloud { animation: cloudDrift 15s ease-in-out infinite alternate; }
+
+    .sparkle { fill: #d4a04a; opacity: 0; animation: sparkle 3s ease-in-out infinite; }
+    .sparkle:nth-child(2) { animation-delay: 1s; }
+    .sparkle:nth-child(3) { animation-delay: 2s; }
+    .sparkle:nth-child(4) { animation-delay: 0.5s; }
+    .sparkle:nth-child(5) { animation-delay: 1.5s; }
+
+    .neural-node { animation: nodePulse 4s ease-in-out infinite; }
+    .neural-node-lg { animation: nodePulseL 5s ease-in-out infinite; }
+    .neural-edge { stroke: #00ff41; stroke-width: 0.5; fill: none; animation: edgePulse 5s ease-in-out infinite; }
+
+    .wave-arm-1 { transform-origin: 420px 280px; animation: wave1Arm 10s ease-in-out infinite; }
+    .wave-arm-2 { transform-origin: 340px 282px; animation: wave2Arm 10s ease-in-out infinite; }
+    .wave-arm-3 { transform-origin: 380px 283px; animation: wave3Arm 10s ease-in-out infinite; }
+    .wave-arm-4 { transform-origin: 310px 285px; animation: wave4Arm 10s ease-in-out infinite; }
+  </style>
+
+  <rect class="sky" width="800" height="400"/>
+
+  <g>
+    <circle class="sun-fill" cx="650" cy="80" r="28"/>
+    <circle class="sun-circle" cx="650" cy="80" r="28"/>
+    <g class="sun-rays">
+      <line class="sun-ray" x1="650" y1="42" x2="650" y2="34"/>
+      <line class="sun-ray" x1="677" y1="53" x2="683" y2="47"/>
+      <line class="sun-ray" x1="688" y1="80" x2="696" y2="80"/>
+      <line class="sun-ray" x1="677" y1="107" x2="683" y2="113"/>
+      <line class="sun-ray" x1="650" y1="118" x2="650" y2="126"/>
+      <line class="sun-ray" x1="623" y1="107" x2="617" y2="113"/>
+      <line class="sun-ray" x1="612" y1="80" x2="604" y2="80"/>
+      <line class="sun-ray" x1="623" y1="53" x2="617" y2="47"/>
+    </g>
+  </g>
+
+  <g class="cloud">
+    <path d="M120,70 Q130,55 145,60 Q155,48 170,58 Q182,50 192,60 Q200,55 205,65 Q195,72 180,70 Q165,75 150,70 Q135,74 120,70" fill="none" stroke="#b8c6d4" stroke-width="1"/>
+  </g>
+  <g class="cloud" style="animation-delay: 0.3s;">
+    <path d="M450,50 Q458,38 470,43 Q478,33 490,42 Q498,36 505,45 Q498,50 488,48 Q478,52 468,48 Q458,51 450,50" fill="none" stroke="#b8c6d4" stroke-width="1"/>
+  </g>
+
+  <g>
+    <line class="neural-edge" x1="60" y1="45" x2="110" y2="80"/>
+    <line class="neural-edge" x1="110" y1="80" x2="170" y2="105"/>
+    <line class="neural-edge" x1="170" y1="105" x2="240" y2="140"/>
+    <line class="neural-edge" x1="170" y1="105" x2="270" y2="85"/>
+    <line class="neural-edge" x1="240" y1="140" x2="270" y2="85"/>
+    <line class="neural-edge" x1="60" y1="45" x2="170" y2="105"/>
+  </g>
+  <g>
+    <path class="neural-node-lg" d="M53,45 Q57,39 60,45 Q63,39 67,45" fill="none" stroke="#00ff41" stroke-width="0.7" stroke-linecap="round"/>
+    <path class="neural-node" d="M104,80 Q107,74 110,80 Q113,74 116,80" fill="none" stroke="#00ff41" stroke-width="0.6" stroke-linecap="round"/>
+    <path class="neural-node" d="M164,105 Q167,99 170,105 Q173,99 176,105" fill="none" stroke="#00ff41" stroke-width="0.7" stroke-linecap="round"/>
+    <path class="neural-node-lg" d="M234,140 Q237,134 240,140 Q243,134 246,140" fill="none" stroke="#00ff41" stroke-width="0.7" stroke-linecap="round"/>
+    <path class="neural-node" d="M264,85 Q267,79 270,85 Q273,79 276,85" fill="none" stroke="#00ff41" stroke-width="0.6" stroke-linecap="round"/>
+  </g>
+
+  <line class="horizon" x1="0" y1="305" x2="800" y2="305"/>
+
+  <g>
+    <circle class="sparkle" cx="600" cy="315" r="1.5"/>
+    <circle class="sparkle" cx="630" cy="320" r="1"/>
+    <circle class="sparkle" cx="660" cy="312" r="1.2"/>
+    <circle class="sparkle" cx="620" cy="325" r="1"/>
+    <circle class="sparkle" cx="650" cy="318" r="1.3"/>
+  </g>
+
+  <path class="wave-line-1" d="M0,310 Q100,300 200,310 Q300,320 400,310 Q500,300 600,310 Q700,320 800,310 L800,400 L0,400 Z"/>
+  <path class="wave-line-2" d="M0,320 Q100,312 200,320 Q300,328 400,320 Q500,312 600,320 Q700,328 800,320 L800,400 L0,400 Z"/>
+  <path class="wave-line-3" d="M0,335 Q100,328 200,335 Q300,342 400,335 Q500,328 600,335 Q700,342 800,335 L800,400 L0,400 Z"/>
+
+  <g class="ship-group">
+    <path class="line-bold" d="M280,290 L300,305 L430,305 L445,290"/>
+    <path class="line-thin" d="M295,298 L435,298"/>
+    <path class="line-thin" d="M310,305 L310,298"/>
+    <path class="line-thin" d="M350,305 L350,298"/>
+    <path class="line-thin" d="M390,305 L390,298"/>
+    <path class="line-thin" d="M420,305 L420,298"/>
+
+    <line class="line-bold" x1="370" y1="145" x2="370" y2="290"/>
+    <line class="line" x1="355" y1="165" x2="395" y2="165"/>
+
+    <path class="sail-fill" d="M372,155 L372,270 L430,270 Z"/>
+    <path class="line" d="M372,155 L372,270 L430,270 Z"/>
+    <path class="line-thin" d="M372,190 L415,260"/>
+    <path class="line-thin" d="M372,220 L405,265"/>
+
+    <path class="sail-fill" d="M368,160 L290,275 L368,275 Z"/>
+    <path class="line" d="M368,160 L290,275 L368,275 Z"/>
+    <path class="line-thin" d="M368,200 L310,270"/>
+
+    <g>
+      <g>
+        <circle class="line" cx="420" cy="272" r="5"/>
+        <line class="line" x1="420" y1="277" x2="420" y2="290"/>
+        <line class="line" x1="420" y1="280" x2="414" y2="286"/>
+        <g class="wave-arm-1"><line class="line" x1="420" y1="280" x2="428" y2="275"/></g>
+        <line class="line" x1="420" y1="290" x2="416" y2="298"/>
+        <line class="line" x1="420" y1="290" x2="424" y2="298"/>
+      </g>
+      <g>
+        <circle class="line" cx="340" cy="272" r="5"/>
+        <line class="line" x1="340" y1="277" x2="340" y2="290"/>
+        <line class="line" x1="340" y1="282" x2="334" y2="278"/>
+        <g class="wave-arm-2"><line class="line" x1="340" y1="282" x2="346" y2="278"/></g>
+        <line class="line" x1="340" y1="290" x2="336" y2="298"/>
+        <line class="line" x1="340" y1="290" x2="344" y2="298"/>
+      </g>
+      <g>
+        <circle class="line" cx="380" cy="275" r="4.5"/>
+        <line class="line" x1="380" y1="279" x2="380" y2="292"/>
+        <line class="line" x1="380" y1="283" x2="374" y2="288"/>
+        <g class="wave-arm-3"><line class="line" x1="380" y1="283" x2="386" y2="288"/></g>
+        <line class="line" x1="380" y1="292" x2="377" y2="298"/>
+        <line class="line" x1="380" y1="292" x2="383" y2="298"/>
+      </g>
+      <g>
+        <circle class="line" cx="310" cy="276" r="4.5"/>
+        <line class="line" x1="310" y1="280" x2="310" y2="293"/>
+        <g class="wave-arm-4"><line class="line" x1="310" y1="285" x2="304" y2="280"/></g>
+        <line class="line" x1="310" y1="285" x2="316" y2="290"/>
+        <line class="line" x1="310" y1="293" x2="307" y2="300"/>
+        <line class="line" x1="310" y1="293" x2="313" y2="300"/>
+      </g>
+    </g>
+  </g>
+
 </svg>
