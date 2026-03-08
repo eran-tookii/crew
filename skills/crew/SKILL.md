@@ -1,6 +1,6 @@
 ---
 name: crew
-description: Manage your AI team. /crew = roster, /crew add [name] "[domain]" = new member, /crew 1-on-1 [name] = check-in, /crew [name] [task] = assign task.
+description: Manage your AI team. /crew = roster, /crew add [name] "[domain]" = new member, /crew 1-on-1 [name] = check-in, /crew [name] [task] = assign task, /crew done [name] = close session.
 metadata:
   compatibility: Claude Code
 ---
@@ -14,6 +14,7 @@ metadata:
 | none | Show roster |
 | `add [name] "[domain]"` | Scaffold a new crew member |
 | `1-on-1 [name]` | Interactive 1-on-1 with a member |
+| `done [name]` | Close session — update context, history, decisions |
 | `[name]` | Activate member, ask for task |
 | `[name] [task]` | Activate member with task |
 
@@ -79,7 +80,9 @@ When re-activated after a clear, your normal startup reads (`context.md`, `decis
 
 ## On every task — after completing the work
 
-1. **Update `context.md`** — reflect any changes to files, patterns, architecture, or configuration
+**MANDATORY — do NOT sign off without completing these steps. The user can also run `/crew done {name}` to trigger this, but you should do it yourself first.**
+
+1. **Update `context.md`** — reflect any changes to files, patterns, architecture, or configuration. Clear `## Current Task` if one exists.
 2. **Append to `history.md`** — add a dated entry with:
    - What was done and why
    - Which files changed
@@ -92,6 +95,8 @@ When re-activated after a clear, your normal startup reads (`context.md`, `decis
    - Trim `history.md` to the 10 most recent entries
 4. **If this task produced a key architectural decision or surfaced a non-obvious gotcha** — add it to `decisions.md` directly, even if no trimming is needed
 5. **Sign off** — end your response with a single line: `— {name}, {domain}`
+
+If the user asks follow-up questions after sign-off, answer them — but run steps 1–4 again before signing off a second time, since the follow-up may have produced new changes.
 ```
 
 ### 3. Create `.claude/crew/{name}/context.md`
@@ -348,6 +353,65 @@ Running log of check-ins. Most recent first. Capped at 5 entries — actionable 
 4. **Maintain the 1-on-1 window** — if `1-on-1s.md` has more than 5 entries, trim to the 5 most recent. No extraction needed — actionable signal already lives in `decisions.md` "Working With Me."
 
 5. Sign off: `— {name}, {domain} (1-on-1)`
+
+---
+
+## `done [name]` — close session
+
+If name is missing, ask for it. Verify `.claude/crew/{name}/SKILL.md` exists; if not, stop and suggest `/crew add`.
+
+This command closes a working session with a crew member. It reviews everything that happened in the current conversation and updates the member's files accordingly.
+
+### 1. Read the member's current files
+
+1. Read `.claude/crew/{name}/SKILL.md` — extract `name` and `description` from frontmatter
+2. Read `.claude/crew/{name}/context.md`
+3. Read `.claude/crew/{name}/decisions.md`
+4. Read `.claude/crew/{name}/history.md`
+
+### 2. Review the conversation
+
+Look back through the full conversation to identify:
+- What tasks were worked on
+- Which files were created, modified, or deleted
+- Any decisions made and their rationale
+- Any gotchas, surprises, or non-obvious behaviors discovered
+- Any patterns or constraints learned
+
+### 3. Update the member's files
+
+Apply all updates in one pass:
+
+**`history.md`** — prepend a new dated entry with:
+- What was done and why
+- Which files changed
+- Run `git log --oneline -5` and find the relevant commit(s) — record commit ID(s) and message(s)
+- PR number if one was created
+- Any decisions made and their rationale
+- Any gotchas discovered
+
+**`context.md`** — update to reflect the current state:
+- New or changed files, patterns, architecture, or configuration
+- Remove anything that is no longer accurate
+- Clear the `## Current Task` section if one exists (task is done)
+
+**`decisions.md`** — add any new entries for:
+- Architectural decisions made during the session
+- Non-obvious gotchas or constraints discovered
+- Things that should not be changed (with the reason why)
+
+**History window maintenance** — if `history.md` now has more than 10 entries:
+- Extract important decisions, gotchas, and patterns into `decisions.md` first
+- Trim to the 10 most recent entries
+
+### 4. Summarize and sign off
+
+Show the user a brief summary of what was updated:
+- Number of history entries added
+- Key context changes
+- Any new decisions recorded
+
+Sign off: `— {name}, {domain} (session closed)`
 
 ---
 
