@@ -122,6 +122,7 @@ Describe the current state of the domain: key files, architecture, patterns, con
 | `/crew [name] [task]` | Activate a member with a task |
 | `/crew 1-on-1 [name]` | Interactive check-in with a member |
 | `/crew done [name]` | Close session, update context & history |
+| `/crew remove [name]` | Remove a member and all their files |
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: crew
-description: Manage your AI team. /crew = roster, /crew add [name] "[domain]" = new member, /crew 1-on-1 [name] = check-in, /crew [name] [task] = assign task, /crew done [name] = close session.
+description: Manage your AI team. /crew = roster, /crew add [name] "[domain]" = new member, /crew 1-on-1 [name] = check-in, /crew [name] [task] = assign task, /crew done [name] = close session, /crew remove [name] = remove member.
 metadata:
   compatibility: Claude Code
 ---
@@ -15,6 +15,7 @@ metadata:
 | `add [name] "[domain]"` | Scaffold a new crew member |
 | `1-on-1 [name]` | Interactive 1-on-1 with a member |
 | `done [name]` | Close session — update context, history, decisions |
+| `remove [name]` | Remove a crew member |
 | `[name]` | Activate member, ask for task |
 | `[name] [task]` | Activate member with task |
 
@@ -33,6 +34,7 @@ metadata:
    - `/crew add [name] "[domain]"` — scaffold a new member
    - `/crew 1-on-1 [name]` — interactive check-in with a member
    - `/crew done [name]` — close session, update context & history
+   - `/crew remove [name]` — remove a member and all their files
 6. Ask which member to work with
 
 ---
@@ -352,6 +354,45 @@ Running log of check-ins. Most recent first. Capped at 5 entries — actionable 
 4. **Maintain the 1-on-1 window** — if `1-on-1s.md` has more than 5 entries, trim to the 5 most recent. No extraction needed — actionable signal already lives in `decisions.md` "Working With Me."
 
 5. Sign off: `— {name}, {domain} (1-on-1)`
+
+---
+
+## `remove [name]` — remove a crew member
+
+If name is missing, ask for it before proceeding.
+
+### 1. Verify the member exists
+
+Use Glob to check if `.claude/crew/{name}/SKILL.md` exists. If not, stop and tell the user that member doesn't exist. Show the roster command (`/crew`) so they can see available members.
+
+### 2. Show what will be deleted
+
+Read `.claude/crew/{name}/SKILL.md` — extract `name` and `description` from frontmatter. Then list all files that will be removed using Glob on `.claude/crew/{name}/*`.
+
+Present a confirmation prompt:
+
+> **Removing {name}** — {description}
+>
+> This will permanently delete:
+> - `SKILL.md` — activation & workflow
+> - `context.md` — domain knowledge
+> - `history.md` — task history
+> - `decisions.md` — institutional memory
+> - `1-on-1s.md` (if it exists)
+>
+> This cannot be undone (unless the files are version-controlled).
+>
+> Proceed?
+
+**Do NOT proceed unless the user explicitly confirms.**
+
+### 3. Delete the member's directory
+
+Use Bash to remove the member's directory: `rm -rf .claude/crew/{name}/`
+
+### 4. Confirm removal
+
+Tell the user the member has been removed. Suggest `/crew` to see the updated roster.
 
 ---
 
