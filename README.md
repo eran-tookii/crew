@@ -17,14 +17,21 @@ Working with AI, I wanted the same thing. Four goals:
 
 Crew is that pattern for Claude. Each domain expert is a set of files: their current knowledge of the domain, a log of every task they've completed, and a permanent record of key decisions and gotchas. Assign them a task, they orient themselves, do the work, and update their own knowledge before they're done.
 
-```
-/crew                              → see your full roster + available commands
-/crew add ester "Stagehand replay" → scaffold a new crew member
-/crew ester                        → activate Ester, she'll ask what the task is
-/crew ester add pause/resume       → assign a task directly
-/crew 1-on-1 ester                 → interactive check-in
-/crew done ester                   → close session, update context & history
-```
+---
+
+## Philosophy
+
+**Context is the asset.** A senior engineer's value isn't just their skills. It's the years of accumulated context about why things are the way they are. Crew externalises that context into files that persist, version, and compound.
+
+**History is the superpower.** `context.md` tells Claude what the domain looks like. `history.md` tells Claude *why*. Without history, Claude might undo a deliberate decision. With it, every task builds on the ones before.
+
+**decisions.md is the permanent record.** History rolls off after 10 entries. The narrative bulk is cheap to lose. The decisions and gotchas are not. `decisions.md` captures that signal permanently, so nothing important is ever trimmed away.
+
+**Living, not static.** The worst outcome is `context.md` drifting from reality. The two-sided workflow (update after every task) is the mechanism that prevents it. Crew members don't just consume context, they maintain it.
+
+**The analogy holds.** When you assign a task to Ester, you don't re-explain the codebase. When Ester finishes, she updates her mental model. That's exactly what this does.
+
+**Just markdown.** Crew is a single skill file and a set of plain text files per member. No scripts, no background processes, no build steps, no dependencies. Everything is readable, editable, and version-controlled. You can open any file, see exactly what your crew member knows, and change it by hand. The entire system is transparent by design.
 
 ---
 
@@ -126,22 +133,6 @@ Describe the current state of the domain: key files, architecture, patterns, con
 - All available commands
 
 As you add members, the roster grows automatically. No configuration needed.
-
----
-
-## Philosophy
-
-**Context is the asset.** A senior engineer's value isn't just their skills. It's the years of accumulated context about why things are the way they are. Crew externalises that context into files that persist, version, and compound.
-
-**History is the superpower.** `context.md` tells Claude what the domain looks like. `history.md` tells Claude *why*. Without history, Claude might undo a deliberate decision. With it, every task builds on the ones before.
-
-**decisions.md is the permanent record.** History rolls off after 10 entries. The narrative bulk is cheap to lose. The decisions and gotchas are not. `decisions.md` captures that signal permanently, so nothing important is ever trimmed away.
-
-**Living, not static.** The worst outcome is `context.md` drifting from reality. The two-sided workflow (update after every task) is the mechanism that prevents it. Crew members don't just consume context, they maintain it.
-
-**The analogy holds.** When you assign a task to Ester, you don't re-explain the codebase. When Ester finishes, she updates her mental model. That's exactly what this does.
-
-**Just markdown.** Crew is a single skill file and a set of plain text files per member. No scripts, no background processes, no build steps, no dependencies. Everything is readable, editable, and version-controlled. You can open any file, see exactly what your crew member knows, and change it by hand. The entire system is transparent by design.
 
 ---
 
