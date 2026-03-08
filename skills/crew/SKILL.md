@@ -21,7 +21,7 @@ metadata:
 
 ## No arguments — show roster
 
-1. Use Glob to find all `.claude/team/*/SKILL.md` files (skip `.claude/team/SKILL.md` itself)
+1. Use Glob to find all `.claude/crew/*/SKILL.md` files (skip `.claude/crew/SKILL.md` itself)
 3. For each member, use the Read tool (not Bash) to read their `SKILL.md` and extract `name` and `description` from the frontmatter
 4. For each member, use the Read tool to read their `history.md` and extract the last entry heading and summary to show what they last worked on
 5. Present a formatted roster
@@ -41,14 +41,14 @@ If name or domain is missing, ask for them before proceeding.
 
 ### 1. Check if member already exists
 
-Use Glob to check if `.claude/team/{name}/` already exists.
+Use Glob to check if `.claude/crew/{name}/` already exists.
 
 If it does, **stop and ask**:
 > `{name}` already exists as a crew member. Overwrite? This will replace `SKILL.md`, `context.md`, `history.md`, and `decisions.md` — all existing context and history will be lost.
 
 Only proceed if the user explicitly confirms. If not, abort and suggest `/crew {name}` to activate the existing member.
 
-### 2. Create `.claude/team/{name}/SKILL.md`
+### 2. Create `.claude/crew/{name}/SKILL.md`
 
 ```markdown
 ---
@@ -61,9 +61,9 @@ user-invocable: false
 
 ## On every task — before writing a single line of code
 
-1. Read `.claude/team/{name}/context.md` — understand the current state of the domain
-2. Read `.claude/team/{name}/decisions.md` — key architectural decisions, gotchas, things not to undo. **Pay special attention to the "Working With Me" section** — these are standing instructions from the user that override defaults
-3. Read the last entries in `.claude/team/{name}/history.md` — recent work and what just changed
+1. Read `.claude/crew/{name}/context.md` — understand the current state of the domain
+2. Read `.claude/crew/{name}/decisions.md` — key architectural decisions, gotchas, things not to undo. **Pay special attention to the "Working With Me" section** — these are standing instructions from the user that override defaults
+3. Read the last entries in `.claude/crew/{name}/history.md` — recent work and what just changed
 4. Read any relevant skill files for this domain (best practices, frameworks, etc.)
 5. Only then proceed with the task
 
@@ -94,7 +94,7 @@ When re-activated after a clear, your normal startup reads (`context.md`, `decis
 5. **Sign off** — end your response with a single line: `— {name}, {domain}`
 ```
 
-### 3. Create `.claude/team/{name}/context.md`
+### 3. Create `.claude/crew/{name}/context.md`
 
 ```markdown
 # {NAME} — Domain Context: {DOMAIN}
@@ -144,7 +144,7 @@ Last updated: {TODAY'S DATE}
 [Key packages this domain uses]
 ```
 
-### 4. Create `.claude/team/{name}/history.md`
+### 4. Create `.claude/crew/{name}/history.md`
 
 ```markdown
 # {NAME} — Domain History: {DOMAIN}
@@ -162,7 +162,7 @@ Domain expert created for: {DOMAIN}
 Fill in `context.md` with the current state of the domain before assigning the first task.
 ```
 
-### 5. Create `.claude/team/{name}/decisions.md`
+### 5. Create `.claude/crew/{name}/decisions.md`
 
 ```markdown
 # {NAME} — Decisions & Institutional Memory: {DOMAIN}
@@ -207,15 +207,15 @@ Optionally suggest they can bootstrap context by sending {NAME} on an exploratio
 
 ## `1-on-1 [name]` — interactive check-in
 
-If name is missing, ask for it before proceeding. Verify `.claude/team/{name}/SKILL.md` exists; if not, stop and suggest `/crew add`.
+If name is missing, ask for it before proceeding. Verify `.claude/crew/{name}/SKILL.md` exists; if not, stop and suggest `/crew add`.
 
 ### Setup
 
-1. Read `.claude/team/{name}/SKILL.md` — extract `name` and `description` from frontmatter
-2. Read `.claude/team/{name}/context.md`
-3. Read `.claude/team/{name}/decisions.md`
-4. Read `.claude/team/{name}/history.md`
-5. Read `.claude/team/{name}/1-on-1s.md` if it exists — review previous check-in notes
+1. Read `.claude/crew/{name}/SKILL.md` — extract `name` and `description` from frontmatter
+2. Read `.claude/crew/{name}/context.md`
+3. Read `.claude/crew/{name}/decisions.md`
+4. Read `.claude/crew/{name}/history.md`
+5. Read `.claude/crew/{name}/1-on-1s.md` if it exists — review previous check-in notes
 
 ### Persona
 
@@ -302,7 +302,7 @@ After all four sections are complete:
 
    Tell the user what you changed and why.
 
-2. **Create `.claude/team/{name}/1-on-1s.md` if it does not exist** using this template:
+2. **Create `.claude/crew/{name}/1-on-1s.md` if it does not exist** using this template:
 
 ```markdown
 # {NAME} — 1-on-1 Notes
@@ -353,7 +353,7 @@ Running log of check-ins. Most recent first. Capped at 5 entries — actionable 
 
 ## `[name]` or `[name] [task]` — activate a member
 
-1. Read `.claude/team/{name}/SKILL.md`
+1. Read `.claude/crew/{name}/SKILL.md`
 2. Follow its instructions exactly
 3. Treat any remaining text as the task description
 4. If no task was provided, ask the user what they'd like to work on

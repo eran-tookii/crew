@@ -29,10 +29,10 @@ Crew is that pattern for Claude. Each domain expert is a set of files: their cur
 
 ## How it works
 
-Each crew member lives in `.claude/team/{name}/`:
+Each crew member lives in `.claude/crew/{name}/`:
 
 ```
-.claude/team/
+.claude/crew/
 ├── .current          ← tracks the last activated member (/crew who reads this)
 └── ester/
     ├── SKILL.md      ← activates Ester, defines her standards
@@ -85,7 +85,7 @@ npx skills add eran-tookii/crew
 This creates:
 
 ```
-.claude/team/ester/
+.claude/crew/ester/
 ├── SKILL.md      ← pre-filled with the two-sided workflow
 ├── context.md    ← ready for you to fill with current domain state
 ├── history.md    ← ready for first entry
@@ -187,7 +187,7 @@ As many as you have distinct domains. A good rule of thumb: if you'd assign it t
 Yes, and you should. These are plain markdown files. If a crew member wrote something wrong, fix it. If context has drifted, update it. The files are the source of truth — there's no hidden state.
 
 **Does this persist across conversations?**
-Yes. Crew member files live in `.claude/team/` inside your project. They survive across conversations, branches, and machines (if you commit them). That's the whole point — context that outlasts a single session.
+Yes. Crew member files live in `.claude/crew/` inside your project. They survive across conversations, branches, and machines (if you commit them). That's the whole point — context that outlasts a single session.
 
 **Does this use extra tokens?**
 A crew member reads their context, history, and decisions files at the start of each task. That's the overhead — typically a few hundred lines of markdown. It's far less than re-explaining the domain from scratch every time, which is what you'd do without it.
