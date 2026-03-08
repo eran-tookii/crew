@@ -6,9 +6,9 @@
 
 ---
 
-When I managed software teams, domain ownership was just how things worked. Every developer owned a part of the codebase. Their history with it: the decisions made, the mistakes survived, the patterns that stuck, made them the natural fit for new tasks in that domain. You didn't re-brief them. You just assigned the ticket.
+In software teams, domain ownership is how things work. Every developer owns a part of the codebase. Their history with it — the decisions made, the mistakes survived, the patterns that stuck — makes them the natural fit for new tasks in that domain. You don't re-brief them. You just assign the ticket.
 
-Working with AI, I wanted the same thing. Four goals:
+Crew brings the same pattern to AI. Four goals:
 
 - **Less time, tokens, and effort.** Stop re-explaining context Claude already worked through.
 - **Agents that improve after every task.** Each run leaves the next one sharper.
