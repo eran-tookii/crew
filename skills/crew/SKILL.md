@@ -358,7 +358,7 @@ Running log of check-ins. Most recent first. Capped at 5 entries — actionable 
 
 ## `done [name]` — close session
 
-If name is missing, ask for it. Verify `.claude/crew/{name}/SKILL.md` exists; if not, stop and suggest `/crew add`.
+If name is missing, look back through the current conversation to determine which crew member was activated (their SKILL.md was read, they signed off, or they were working on a task). Use that member. If no member was activated in this conversation, then ask. Verify `.claude/crew/{name}/SKILL.md` exists; if not, stop and suggest `/crew add`.
 
 This command closes a working session with a crew member. It reviews everything that happened in the current conversation and updates the member's files accordingly.
 
