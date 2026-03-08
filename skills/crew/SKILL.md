@@ -196,12 +196,12 @@ User preferences for how this member should work. These are standing instruction
 [e.g., "Always plan before executing", "Only reference docs in /docs, not external sources", "Keep PRs small — one concern per PR"]
 ```
 
-### 6. Confirm
+### 6. Confirm and activate
 
-Tell the user what was created, then ask what they'd like to work on.
+Tell the user what was created, then **activate the new member** — follow the `[name]` activation flow (read the newly created SKILL.md and follow its instructions). Since no task was provided, ask the user what they'd like to work on.
 
-Optionally suggest they can bootstrap context by sending {NAME} on an exploration task first, for example:
-> `/crew {name} — look into the project and find areas relevant to your domain '{DOMAIN}'. Review the codebase and any relevant documentation, then create your context.md based on what you find.`
+Suggest they can bootstrap context by sending the member on an exploration task first, for example:
+> Look into the project and find areas relevant to your domain '{DOMAIN}'. Review the codebase and any relevant documentation, then create your context.md based on what you find.
 
 ---
 
