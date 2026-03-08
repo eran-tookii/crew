@@ -19,9 +19,9 @@ Crew is that pattern for Claude. Each domain expert is a set of files: their cur
 
 ```
 /crew                              → see your full roster + available commands
+/crew add ester "Stagehand replay" → scaffold a new crew member
 /crew ester                        → activate Ester, she'll ask what the task is
 /crew ester add pause/resume       → assign a task directly
-/crew add ester "Stagehand replay" → scaffold a new crew member
 /crew 1-on-1 ester                 → interactive check-in
 /crew done ester                   → close session, update context & history
 ```
@@ -110,9 +110,9 @@ Describe the current state of the domain: key files, architecture, patterns, con
 | Command | Description |
 |---------|-------------|
 | `/crew` | Show the full roster + available commands |
+| `/crew add [name] "[domain]"` | Scaffold a new crew member |
 | `/crew [name]` | Activate a member, they'll ask for the task |
 | `/crew [name] [task]` | Activate a member with a task |
-| `/crew add [name] "[domain]"` | Scaffold a new crew member |
 | `/crew 1-on-1 [name]` | Interactive check-in with a member |
 | `/crew done [name]` | Close session, update context & history |
 
