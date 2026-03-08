@@ -80,14 +80,12 @@ When re-activated after a clear, your normal startup reads (`context.md`, `decis
 
 ## On every task — after completing the work
 
-**MANDATORY — do NOT sign off without completing these steps. The user can also run `/crew done {name}` to trigger this, but you should do it yourself first.**
+**MANDATORY — do NOT sign off without completing these steps.**
 
 1. **Update `context.md`** — reflect any changes to files, patterns, architecture, or configuration. Clear `## Current Task` if one exists.
 2. **Append to `history.md`** — add a dated entry with:
    - What was done and why
    - Which files changed
-   - Run `git log --oneline -1` and record the commit ID and message
-   - PR number if one exists
    - Any decisions made and their rationale
    - Any gotchas discovered
 3. **Maintain the history window** — if `history.md` has more than 10 entries:
@@ -369,24 +367,21 @@ This command closes a working session with a crew member. It reviews everything 
 3. Read `.claude/crew/{name}/decisions.md`
 4. Read `.claude/crew/{name}/history.md`
 
-### 2. Review the conversation
+### 2. Check if the member already signed off
 
-Look back through the full conversation to identify:
-- What tasks were worked on
-- Which files were created, modified, or deleted
-- Any decisions made and their rationale
-- Any gotchas, surprises, or non-obvious behaviors discovered
-- Any patterns or constraints learned
+Look back through the conversation. If the member already completed their sign-off steps (updated context.md, appended to history.md, etc.) as part of their normal task completion:
 
-### 3. Update the member's files
+1. Read the updated files to verify they reflect the work done in this conversation
+2. If the files are up to date — **skip to step 4** (summarize and sign off). Do not duplicate history entries or re-apply changes.
+3. If the files are missing information (e.g., a follow-up happened after sign-off), apply only the **incremental updates** needed — don't rewrite what's already there.
 
-Apply all updates in one pass:
+### 3. Update the member's files (only if sign-off was not already done)
+
+If the member did NOT sign off during the conversation, apply all updates in one pass:
 
 **`history.md`** — prepend a new dated entry with:
 - What was done and why
 - Which files changed
-- Run `git log --oneline -5` and find the relevant commit(s) — record commit ID(s) and message(s)
-- PR number if one was created
 - Any decisions made and their rationale
 - Any gotchas discovered
 
@@ -406,10 +401,9 @@ Apply all updates in one pass:
 
 ### 4. Summarize and sign off
 
-Show the user a brief summary of what was updated:
-- Number of history entries added
-- Key context changes
-- Any new decisions recorded
+Show the user a brief summary:
+- If files were already up to date: confirm the member signed off properly, note what was already recorded
+- If updates were applied: show number of history entries added, key context changes, any new decisions recorded
 
 Sign off: `— {name}, {domain} (session closed)`
 
