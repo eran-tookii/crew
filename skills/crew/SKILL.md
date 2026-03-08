@@ -32,6 +32,7 @@ metadata:
    - `/crew [name] [task]` — activate a member with a task
    - `/crew add [name] "[domain]"` — scaffold a new member
    - `/crew 1-on-1 [name]` — interactive check-in with a member
+   - `/crew done [name]` — close session, update context & history
 6. Ask which member to work with
 
 ---
