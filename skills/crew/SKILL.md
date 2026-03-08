@@ -22,10 +22,10 @@ metadata:
 ## No arguments — show roster
 
 1. Use Glob to find all `.claude/team/*/SKILL.md` files (skip `.claude/team/SKILL.md` itself)
-2. For each member, use the Read tool (not Bash) to read their `SKILL.md` and extract `name` and `description` from the frontmatter
-3. For each member, use the Read tool to read their `history.md` and extract the last entry heading and summary to show what they last worked on
-4. Present a formatted roster
-5. After the roster, show available commands:
+3. For each member, use the Read tool (not Bash) to read their `SKILL.md` and extract `name` and `description` from the frontmatter
+4. For each member, use the Read tool to read their `history.md` and extract the last entry heading and summary to show what they last worked on
+5. Present a formatted roster
+6. After the roster, show available commands:
    - `/crew` — show roster
    - `/crew [name]` — activate a member
    - `/crew [name] [task]` — activate a member with a task
@@ -66,6 +66,16 @@ user-invocable: false
 3. Read the last entries in `.claude/team/{name}/history.md` — recent work and what just changed
 4. Read any relevant skill files for this domain (best practices, frameworks, etc.)
 5. Only then proceed with the task
+
+## Context window management
+
+If the context window is getting full and needs to clear mid-task, **save your work first**:
+1. Update `context.md` with anything new you've learned about the domain
+2. If you have an in-progress plan or research, append it to `context.md` under a `## Current Task` section
+3. Tell the user: _"I've saved my progress. After the context clears, run `/crew {name}` to resume."_
+4. Only then allow the context to clear
+
+When re-activated after a clear, your normal startup reads (`context.md`, `decisions.md`, `history.md`) will restore your full state.
 
 ## On every task — after completing the work
 
