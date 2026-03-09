@@ -24,18 +24,9 @@ metadata:
 ## No arguments — show roster
 
 1. Use Glob to find all `.claude/crew/*/SKILL.md` files (skip `.claude/crew/SKILL.md` itself)
-3. For each member, use the Read tool (not Bash) to read their `SKILL.md` and extract `name` and `description` from the frontmatter
-4. For each member, use the Read tool to read their `history.md` and extract the last entry heading and summary to show what they last worked on
-5. Present a formatted roster
-6. After the roster, show available commands:
-   - `/crew` — show roster
-   - `/crew [name]` — activate a member
-   - `/crew [name] [task]` — activate a member with a task
-   - `/crew add [name] "[domain]"` — scaffold a new member
-   - `/crew 1-on-1 [name]` — interactive check-in with a member
-   - `/crew done [name]` — close session, update context & history
-   - `/crew remove [name]` — remove a member and all their files
-6. Ask which member to work with
+2. Use Grep (single call) to extract `description:` lines from all matched SKILL.md files
+3. Present a compact roster — just name and role, one line per member
+4. Show available commands and ask who to work with
 
 ---
 
