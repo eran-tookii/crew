@@ -5,7 +5,7 @@ metadata:
   compatibility: Claude Code
 ---
 
-# Crew
+# Crew v1.2.2
 
 ## Routing — read the arguments first
 
