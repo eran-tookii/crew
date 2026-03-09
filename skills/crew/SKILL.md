@@ -48,7 +48,7 @@ If name or domain is missing, ask for them before proceeding.
 Use Glob to check if `.claude/crew/{name}/` already exists.
 
 If it does, **stop and ask**:
-> `{name}` already exists as a crew member. Overwrite? This will replace `SKILL.md`, `context.md`, `history.md`, and `decisions.md` — all existing context and history will be lost.
+> `{name}` already exists as a crew member. Overwrite? This will replace all files in `.claude/crew/{name}/` — existing context and history will be lost.
 
 Only proceed if the user explicitly confirms. If not, abort and suggest `/crew {name}` to activate the existing member.
 
@@ -65,11 +65,22 @@ user-invocable: false
 
 ## On every task — before writing a single line of code
 
-1. Read `.claude/crew/{name}/context.md` — understand the current state of the domain
-2. Read `.claude/crew/{name}/decisions.md` — key architectural decisions, gotchas, things not to undo. **Pay special attention to the "Working With Me" section** — these are standing instructions from the user that override defaults
-3. Read the last entries in `.claude/crew/{name}/history.md` — recent work and what just changed
+1. Read `.claude/crew/{name}/context.md` — understand the current state of the domain. **If the file does not exist, this is your first task — run the bootstrap step below.**
+2. Read `.claude/crew/{name}/decisions.md` — key architectural decisions, gotchas, things not to undo. **Pay special attention to the "Working With Me" section** — these are standing instructions from the user that override defaults. (Skip if file does not exist yet.)
+3. Read the last entries in `.claude/crew/{name}/history.md` — recent work and what just changed. (Skip if file does not exist yet.)
 4. Read any relevant skill files for this domain (best practices, frameworks, etc.)
 5. Only then proceed with the task
+
+## First-task bootstrap
+
+If `context.md` does not exist, this member was just created. Before starting the task:
+
+1. Explore the codebase to find files, patterns, and architecture relevant to your domain "{DOMAIN}"
+2. Create `.claude/crew/{name}/context.md` with what you find (use the template from the crew skill's "Context template" section)
+3. Create `.claude/crew/{name}/history.md` with an initial entry (use the template from the crew skill's "History template" section)
+4. Create `.claude/crew/{name}/decisions.md` with any decisions or gotchas you discover (use the template from the crew skill's "Decisions template" section)
+
+Then proceed with the task.
 
 ## Context window management
 
@@ -100,114 +111,13 @@ When re-activated after a clear, your normal startup reads (`context.md`, `decis
 If the user asks follow-up questions after sign-off, answer them — but run steps 1–4 again before signing off a second time, since the follow-up may have produced new changes.
 ```
 
-### 3. Create `.claude/crew/{name}/context.md`
+### 3. Confirm — do NOT activate
 
-```markdown
-# {NAME} — Domain Context: {DOMAIN}
+Tell the user:
+> **{name}** added — {domain}.
+> Run `/crew {name} [task]` to start. On the first task, {name} will explore the codebase and bootstrap their own context.
 
-Last updated: {TODAY'S DATE}
-
-## What This Domain Does
-
-[Describe what this domain is responsible for — 2-3 sentences]
-
----
-
-## Key Files
-
-| File | Role |
-|------|------|
-| `path/to/file` | What it does |
-
----
-
-## Architecture
-
-[Describe the architecture — how data flows, what calls what]
-
----
-
-## Key Patterns
-
-[Document the patterns used in this domain]
-
----
-
-## Important Constraints & Gotchas
-
-[Things that are non-obvious, decisions that look wrong but aren't, things not to change]
-
----
-
-## Environment Variables
-
-[Any env vars this domain depends on]
-
----
-
-## Dependencies
-
-[Key packages this domain uses]
-```
-
-### 4. Create `.claude/crew/{name}/history.md`
-
-```markdown
-# {NAME} — Domain History: {DOMAIN}
-
-Capped at 10 entries. When trimmed, important decisions and gotchas are extracted to `decisions.md` first.
-
----
-
-## {TODAY'S DATE} — Initial setup
-
-**Added by:** /crew add
-
-Domain expert created for: {DOMAIN}
-
-Fill in `context.md` with the current state of the domain before assigning the first task.
-```
-
-### 5. Create `.claude/crew/{name}/decisions.md`
-
-```markdown
-# {NAME} — Decisions & Institutional Memory: {DOMAIN}
-
-Evergreen knowledge extracted from history: architectural decisions, known gotchas, and things not to undo. Updated when important decisions are made or when history.md is trimmed.
-
----
-
-## Key Decisions
-
-[Record important architectural choices and the reasoning behind them]
-
----
-
-## Known Gotchas
-
-[Non-obvious behaviors, traps, and things that look wrong but aren't]
-
----
-
-## Things Not To Change
-
-[Deliberate decisions that might look like bugs or bad patterns — with the reason why]
-
----
-
-## Working With Me
-
-User preferences for how this member should work. These are standing instructions — follow them on every task. Added during 1-on-1s based on direct user feedback.
-
-[e.g., "Always plan before executing", "Only reference docs in /docs, not external sources", "Keep PRs small — one concern per PR"]
-```
-
-### 6. Confirm and activate
-
-Tell the user what was created, then **activate the new member** — follow the `[name]` activation flow (read the newly created SKILL.md and follow its instructions). Since no task was provided, ask the user what they'd like to work on.
-
-Suggest they can bootstrap context by sending the member on an exploration task first, for example:
-> Look into the project and find areas relevant to your domain '{DOMAIN}'. Review the codebase and any relevant documentation, then create your context.md based on what you find.
+**Do NOT activate the member. Do NOT read back the files. Do NOT ask what to work on.** The add command is done.
 
 ---
 
@@ -451,10 +361,102 @@ Sign off: `— {name}, {domain} (session closed)`
 
 ---
 
+## File templates — used by first-task bootstrap
+
+These templates are referenced by the member's SKILL.md during first-task bootstrap. Write them verbatim, filling in `{NAME}`, `{DOMAIN}`, and `{TODAY'S DATE}`. The `[bracketed]` placeholders should be filled in based on codebase exploration.
+
+### Context template
+
+```markdown
+# {NAME} — Domain Context: {DOMAIN}
+
+Last updated: {TODAY'S DATE}
+
+## What This Domain Does
+
+[Describe what this domain is responsible for — 2-3 sentences based on codebase exploration]
+
+---
+
+## Key Files
+
+| File | Role |
+|------|------|
+| `path/to/file` | What it does |
+
+---
+
+## Architecture
+
+[Describe the architecture — how data flows, what calls what]
+
+---
+
+## Key Patterns
+
+[Document the patterns used in this domain]
+
+---
+
+## Important Constraints & Gotchas
+
+[Things that are non-obvious, decisions that look wrong but aren't, things not to change]
+```
+
+### History template
+
+```markdown
+# {NAME} — Domain History: {DOMAIN}
+
+Capped at 10 entries. When trimmed, important decisions and gotchas are extracted to `decisions.md` first.
+
+---
+
+## {TODAY'S DATE} — Initial setup
+
+**Added by:** /crew add
+
+Domain expert created for: {DOMAIN}. Context bootstrapped from codebase exploration.
+```
+
+### Decisions template
+
+```markdown
+# {NAME} — Decisions & Institutional Memory: {DOMAIN}
+
+Evergreen knowledge extracted from history: architectural decisions, known gotchas, and things not to undo. Updated when important decisions are made or when history.md is trimmed.
+
+---
+
+## Key Decisions
+
+[Record important architectural choices discovered during exploration]
+
+---
+
+## Known Gotchas
+
+[Non-obvious behaviors, traps, and things that look wrong but aren't]
+
+---
+
+## Things Not To Change
+
+[Deliberate decisions that might look like bugs or bad patterns — with the reason why]
+
+---
+
+## Working With Me
+
+User preferences for how this member should work. These are standing instructions — follow them on every task. Added during 1-on-1s based on direct user feedback.
+```
+
+---
+
 ## `[name]` or `[name] [task]` — activate a member
 
 1. Read `.claude/crew/{name}/SKILL.md`
-2. Follow its instructions exactly
+2. Follow its instructions exactly (including first-task bootstrap if context.md does not exist)
 3. Treat any remaining text as the task description
 4. If no task was provided, ask the user what they'd like to work on
 5. When the task is complete, sign off with a single line: `— {name}, {domain}`
