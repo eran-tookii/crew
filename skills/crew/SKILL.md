@@ -5,7 +5,7 @@ metadata:
   compatibility: Claude Code
 ---
 
-# Crew v1.3.0
+# Crew v1.3.1
 
 ## Routing — read the arguments first
 
@@ -86,19 +86,11 @@ When re-activated after a clear, your normal startup reads (`context.md`, `decis
 
 **MANDATORY — do NOT sign off without completing these steps.**
 
-1. **Update `context.md`** — reflect any changes to files, patterns, architecture, or configuration. Clear `## Current Task` if one exists.
-2. **Append to `history.md`** — add a dated entry with:
-   - What was done and why
-   - Which files changed
-   - Any decisions made and their rationale
-   - Any gotchas discovered
-3. **Maintain the history window** — if `history.md` has more than 10 entries:
-   - Extract any important decisions, gotchas, or patterns into `decisions.md` before they are lost
-   - Trim `history.md` to the 10 most recent entries
-4. **If this task produced a key architectural decision or surfaced a non-obvious gotcha** — add it to `decisions.md` directly, even if no trimming is needed
-5. **Sign off** — end your response with a single line: `— {name}, {domain}`
-
-If the user asks follow-up questions after sign-off, answer them — but run steps 1–4 again before signing off a second time, since the follow-up may have produced new changes.
+1. **Update `context.md`** — only if key files or architecture changed. Clear `## Current Task` if one exists. Keep it concise.
+2. **Append one line to `history.md`** — format: `- {DATE} — {one-sentence summary of what was done}`
+3. **Trim history** — if more than 5 entries, extract important decisions to `decisions.md`, then trim to 5
+4. **Update `decisions.md`** — only if a key architectural decision or non-obvious gotcha surfaced
+5. **Sign off** — `— {name}, {domain}`
 ```
 
 ### 3. Update `.claude/crew/roster.md`
@@ -156,7 +148,7 @@ Audit the member's files and report concrete findings:
 |-------|----------------|
 | **context.md freshness** | Compare the `Last updated` date to today. Compare the content against recent history.md entries — flag anything in history that is not reflected in context. |
 | **decisions.md coverage** | Scan history.md for entries mentioning decisions, gotchas, or "things not to change." Flag any that do not have a corresponding entry in decisions.md. |
-| **history.md window** | Count entries. If at 10, note that the next task will trigger a trim — ask if anything should be extracted to decisions.md first. If well under 10, note the headroom. |
+| **history.md window** | Count entries. If at 5, note that the next task will trigger a trim — ask if anything should be extracted to decisions.md first. If well under 5, note the headroom. |
 | **Key files drift** | If context.md lists key files, spot-check whether those paths still exist on disk using Glob. Report any missing files. |
 
 Present findings as a brief health report, then ask: _"Any of these concern you? Want me to fix anything now?"_
@@ -331,25 +323,10 @@ Look back through the conversation. If the member already completed their sign-o
 
 If the member did NOT sign off during the conversation, apply all updates in one pass:
 
-**`history.md`** — prepend a new dated entry with:
-- What was done and why
-- Which files changed
-- Any decisions made and their rationale
-- Any gotchas discovered
-
-**`context.md`** — update to reflect the current state:
-- New or changed files, patterns, architecture, or configuration
-- Remove anything that is no longer accurate
-- Clear the `## Current Task` section if one exists (task is done)
-
-**`decisions.md`** — add any new entries for:
-- Architectural decisions made during the session
-- Non-obvious gotchas or constraints discovered
-- Things that should not be changed (with the reason why)
-
-**History window maintenance** — if `history.md` now has more than 10 entries:
-- Extract important decisions, gotchas, and patterns into `decisions.md` first
-- Trim to the 10 most recent entries
+- **`history.md`** — append one line: `- {DATE} — {one-sentence summary}`
+- **`context.md`** — update only if key files or architecture changed. Clear `## Current Task` if present.
+- **`decisions.md`** — add only if a key decision or non-obvious gotcha surfaced
+- **Trim history** — if more than 5 entries, extract decisions to `decisions.md`, then trim to 5
 
 ### 4. Summarize and sign off
 
@@ -367,16 +344,10 @@ These templates are referenced by the member's SKILL.md during first-task bootst
 
 ### Context template
 
+Keep this file under 50 lines. Only facts the member needs to start working — not documentation.
+
 ```markdown
-# {NAME} — Domain Context: {DOMAIN}
-
-Last updated: {TODAY'S DATE}
-
-## What This Domain Does
-
-[Describe what this domain is responsible for — 2-3 sentences based on codebase exploration]
-
----
+# {NAME} — {DOMAIN}
 
 ## Key Files
 
@@ -384,71 +355,35 @@ Last updated: {TODAY'S DATE}
 |------|------|
 | `path/to/file` | What it does |
 
----
+## How It Works
 
-## Architecture
-
-[Describe the architecture — how data flows, what calls what]
-
----
-
-## Key Patterns
-
-[Document the patterns used in this domain]
-
----
-
-## Important Constraints & Gotchas
-
-[Things that are non-obvious, decisions that look wrong but aren't, things not to change]
+[2-5 sentences: architecture, data flow, key patterns — only what's non-obvious]
 ```
 
 ### History template
 
+One line per task. Capped at 5 entries.
+
 ```markdown
-# {NAME} — Domain History: {DOMAIN}
+# {NAME} — History
 
-Capped at 10 entries. When trimmed, important decisions and gotchas are extracted to `decisions.md` first.
-
----
-
-## {TODAY'S DATE} — Initial setup
-
-**Added by:** /crew add
-
-Domain expert created for: {DOMAIN}. Context bootstrapped from codebase exploration.
+- {TODAY'S DATE} — Initial setup: context bootstrapped from codebase exploration
 ```
 
 ### Decisions template
 
+Evergreen knowledge only — things the member needs to avoid repeating mistakes.
+
 ```markdown
-# {NAME} — Decisions & Institutional Memory: {DOMAIN}
+# {NAME} — Decisions
 
-Evergreen knowledge extracted from history: architectural decisions, known gotchas, and things not to undo. Updated when important decisions are made or when history.md is trimmed.
+## Decisions & Gotchas
 
----
-
-## Key Decisions
-
-[Record important architectural choices discovered during exploration]
-
----
-
-## Known Gotchas
-
-[Non-obvious behaviors, traps, and things that look wrong but aren't]
-
----
-
-## Things Not To Change
-
-[Deliberate decisions that might look like bugs or bad patterns — with the reason why]
-
----
+[Architectural choices, non-obvious constraints, things not to change — with brief reasoning]
 
 ## Working With Me
 
-User preferences for how this member should work. These are standing instructions — follow them on every task. Added during 1-on-1s based on direct user feedback.
+[Standing instructions from the user, added during 1-on-1s]
 ```
 
 ---
