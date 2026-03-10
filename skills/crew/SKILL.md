@@ -5,7 +5,7 @@ metadata:
   compatibility: Claude Code
 ---
 
-# Crew v1.2.2
+# Crew v1.3.0
 
 ## Routing — read the arguments first
 
@@ -23,10 +23,9 @@ metadata:
 
 ## No arguments — show roster
 
-1. Use Glob to find all `.claude/crew/*/SKILL.md` files (skip `.claude/crew/SKILL.md` itself)
-2. Use Grep (single call) to extract `description:` lines from all matched SKILL.md files
-3. Present a compact roster — just name and role, one line per member
-4. Show available commands and ask who to work with
+1. Read `.claude/crew/roster.md`
+2. Print it as-is — it already contains the formatted roster
+3. Show available commands and ask who to work with
 
 ---
 
@@ -102,7 +101,13 @@ When re-activated after a clear, your normal startup reads (`context.md`, `decis
 If the user asks follow-up questions after sign-off, answer them — but run steps 1–4 again before signing off a second time, since the follow-up may have produced new changes.
 ```
 
-### 3. Confirm — do NOT activate
+### 3. Update `.claude/crew/roster.md`
+
+Add a line for the new member: `- **{name}** — {domain}`
+
+If `roster.md` does not exist yet, create it with a `# Crew Roster` heading first.
+
+### 4. Confirm — do NOT activate
 
 Tell the user:
 > **{name}** added — {domain}.
@@ -291,7 +296,11 @@ Present a confirmation prompt:
 
 Use Bash to remove the member's directory: `rm -rf .claude/crew/{name}/`
 
-### 4. Confirm removal
+### 4. Remove from `.claude/crew/roster.md`
+
+Remove the line for this member from `roster.md`.
+
+### 5. Confirm removal
 
 Tell the user the member has been removed. Suggest `/crew` to see the updated roster.
 
