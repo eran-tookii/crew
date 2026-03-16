@@ -1,17 +1,18 @@
 ---
 name: crew
-description: Manage your AI team. /crew = roster, /crew add [name] "[domain]" = new member, /crew 1-on-1 [name] = check-in, /crew [name] [task] = assign task, /crew done [name] = close session, /crew remove [name] = remove member.
+description: Manage your AI team. /crew = roster, /crew init = generate shared project reference, /crew add [name] "[domain]" = new member, /crew 1-on-1 [name] = check-in, /crew [name] [task] = assign task, /crew done [name] = close session, /crew remove [name] = remove member.
 metadata:
   compatibility: Claude Code
 ---
 
-# Crew v1.4.0
+# Crew v1.5.0
 
 ## Routing — read the arguments first
 
 | Arguments | Action |
 |-----------|--------|
 | none | Show roster |
+| `init` | Generate shared project reference for all crew members |
 | `add [name] "[domain]"` | Scaffold a new crew member |
 | `1-on-1 [name]` | Interactive 1-on-1 with a member |
 | `done [name]` | Close session — update context, history, decisions |
@@ -26,6 +27,110 @@ metadata:
 1. Read `.claude/crew/roster.md`
 2. Print it as-is — it already contains the formatted roster
 3. Show available commands and ask who to work with
+
+---
+
+## `init` — generate shared project reference
+
+Creates `.claude/crew/PROJECT.md` — a single shared file that documents the project for the entire crew. New members read it during bootstrap instead of re-exploring the codebase from scratch.
+
+### 1. Check for existing PROJECT.md
+
+Use Glob to check if `.claude/crew/PROJECT.md` already exists.
+
+If it does, tell the user:
+> `PROJECT.md` already exists. Refresh it (update with any changes since it was written) or regenerate from scratch?
+
+Wait for their choice before proceeding. On **refresh**, read the existing file first and carry forward anything still accurate. On **regenerate**, start fresh.
+
+### 2. Explore the project automatically
+
+Run these in parallel to gather raw facts before asking the user anything:
+
+- **Structure**: list top-level directories and files (skip `.git`, `node_modules`, common build dirs)
+- **Manifests**: look for `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `requirements.txt`, `Gemfile`, `pom.xml` — read whichever exist to extract project name, description, dependencies
+- **README**: read `README.md` if it exists — extract purpose, setup steps, any stated conventions
+- **Entry points**: look for `main.*`, `index.*`, `app.*`, `server.*`, `cli.*` at top level and in `src/`
+- **Recent activity**: run `git log --oneline -20` to see which areas of the codebase have been most active lately
+
+Synthesise a draft understanding: project name, what it does, tech stack, main entry points, top-level structure.
+
+### 3. Ask — two rounds, not a wall of questions
+
+**Round 1** — present your draft and validate:
+
+> Here's what I found:
+> **[Project name]** — [1-sentence description of what it does]
+> Tech: [stack summary]
+> Main entry: [key files]
+>
+> Does this look right? Anything to correct or add?
+
+Wait for the user's response. Incorporate corrections.
+
+**Round 2** — ask only what exploration can't answer:
+
+> A few questions to fill in what I can't infer from the code:
+> 1. What are the main functional domains or areas of this codebase? (e.g. "auth, payments, notifications" — I'll use this for the Domain Map so crew members know who owns what)
+> 2. Anything non-obvious about the dev setup, local environment, or how to run tests?
+> 3. Any conventions, gotchas, or things new contributors commonly get wrong?
+
+Wait for the user's response. If they skip a question, leave that section as a placeholder.
+
+### 4. Write `.claude/crew/PROJECT.md`
+
+```markdown
+# Project: {PROJECT NAME}
+
+> Generated: {TODAY'S DATE} | Shared reference for all crew members. Run `/crew init` to refresh.
+
+## What This Is
+
+{1-3 sentences: what the project does and who uses it}
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| {layer} | {tech} |
+
+## Project Map
+
+    {annotated top-level directory tree — one line per entry, what each folder/file does}
+
+## Key Entry Points
+
+| File | Purpose |
+|------|---------|
+| {file} | {what it does} |
+
+## Domain Map
+
+How this codebase maps to crew member responsibilities. Update when you add new members.
+
+| Domain | Owner | Key paths |
+|--------|-------|-----------|
+| {domain} | {crew member name or "unassigned"} | {main files/dirs} |
+
+## Dev Setup
+
+{How to install, run, test, build — extracted from README + manifests + user input}
+
+## Conventions
+
+{Naming conventions, patterns, architectural rules — things that are consistent throughout the codebase}
+
+## Common Gotchas
+
+{Things that trip up new contributors — non-obvious constraints, known footguns, things not to change without understanding why}
+```
+
+### 5. Confirm
+
+Tell the user:
+> **PROJECT.md written** — {n} sections, {n} domains mapped.
+> All crew members will read this automatically on their first task.
+> Run `/crew init` any time to refresh it as the project evolves.
 
 ---
 
@@ -79,10 +184,11 @@ user-invocable: false
 
 If `context.md` does not exist, this member was just created. Before starting the task:
 
-1. Explore the codebase to find files, patterns, and architecture relevant to your domain "{DOMAIN}"
-2. Create `.claude/crew/{name}/context.md` with what you find (use the template from the crew skill's "Context template" section)
-3. Create `.claude/crew/{name}/history.md` with an initial entry (use the template from the crew skill's "History template" section)
-4. Create `.claude/crew/{name}/decisions.md` with any decisions or gotchas you discover (use the template from the crew skill's "Decisions template" section)
+1. **Read `.claude/crew/PROJECT.md` if it exists** — this is the shared project reference. Use it as your starting point instead of exploring blindly. Note the Domain Map to understand where your domain "{DOMAIN}" sits relative to others.
+2. Explore the codebase to find files, patterns, and architecture relevant to your domain "{DOMAIN}" — focus on the paths relevant to your domain; PROJECT.md already covers the big picture
+3. Create `.claude/crew/{name}/context.md` with what you find (use the template from the crew skill's "Context template" section)
+4. Create `.claude/crew/{name}/history.md` with an initial entry (use the template from the crew skill's "History template" section)
+5. Create `.claude/crew/{name}/decisions.md` with any decisions or gotchas you discover (use the template from the crew skill's "Decisions template" section)
 
 Then proceed with the task.
 
