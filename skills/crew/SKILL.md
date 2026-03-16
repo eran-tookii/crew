@@ -5,7 +5,7 @@ metadata:
   compatibility: Claude Code
 ---
 
-# Crew v1.3.1
+# Crew v1.4.0
 
 ## Routing — read the arguments first
 
@@ -55,9 +55,23 @@ user-invocable: false
 
 ## On every task — before writing a single line of code
 
+**Step 1 — Always read:**
 1. Read `.claude/crew/{name}/context.md` — understand the current state of the domain. **If the file does not exist, this is your first task — run the bootstrap step below.**
+
+**Step 1a — Blocked check:** If `context.md` contains a `## Blocked` section, **stop**. Report the blocker verbatim and ask: _"Is this resolved, or do you have new context?"_
+- If yes → remove the `## Blocked` section from `context.md`, then continue.
+- If no → wait. Do not load `decisions.md` or `history.md`.
+
+**Step 2 — Always read:**
 2. Read `.claude/crew/{name}/decisions.md` — key architectural decisions, gotchas, things not to undo. **Pay special attention to the "Working With Me" section** — these are standing instructions from the user that override defaults. (Skip if file does not exist yet.)
-3. Read the last entries in `.claude/crew/{name}/history.md` — recent work and what just changed. (Skip if file does not exist yet.)
+
+**Step 3 — Conditional (skip when not needed):**
+3. Read `.claude/crew/{name}/history.md` **only if** any of these are true:
+   - `context.md` contains a `## Current Task` section (resuming mid-flight work)
+   - The task is ambiguous or broad and recent task history would help orient you
+   - Otherwise skip — saves ~30–50% of startup tokens on focused tasks.
+
+**Step 4:**
 4. Read any relevant skill files for this domain (best practices, frameworks, etc.)
 5. Only then proceed with the task
 
@@ -74,23 +88,42 @@ Then proceed with the task.
 
 ## Context window management
 
+`context.md` is the hot path — keep it **≤ 30 lines**. Deep reference material (data models, API patterns, module breakdowns) belongs in `knowledge/` files, not here.
+
 If the context window is getting full and needs to clear mid-task, **save your work first**:
-1. Update `context.md` with anything new you've learned about the domain
+1. Update `context.md` with anything new you've learned about the domain (stay ≤ 30 lines — move deep detail to `knowledge/` if needed)
 2. If you have an in-progress plan or research, append it to `context.md` under a `## Current Task` section
 3. Tell the user: _"I've saved my progress. After the context clears, run `/crew {name}` to resume."_
 4. Only then allow the context to clear
 
-When re-activated after a clear, your normal startup reads (`context.md`, `decisions.md`, `history.md`) will restore your full state.
+When re-activated after a clear, `context.md` and `decisions.md` will restore your core state; `history.md` loads only if `## Current Task` is present.
+
+**If you are stuck and cannot proceed**, write a `## Blocked` section to `context.md` before exiting:
+
+    ## Blocked
+    [What is blocking you — missing info, unresolved decision, external dependency. Who needs to act.]
+
+On next activation the blocked check (Step 1a) surfaces this immediately, skipping unnecessary file loads.
+
+## Knowledge files — on-demand reference
+
+Deep reference material lives in `.claude/crew/{name}/knowledge/*.md`. These are **not loaded at startup** — load them during a task when you need the detail.
+
+- Create them when you discover domain knowledge too deep for `context.md` (e.g. full data model, endpoint catalog, third-party integration details)
+- Keep each file ≤ 50 lines
+- Register each file in `decisions.md` under `## Knowledge Index` (filename + one-line description)
+- On future tasks: scan the `## Knowledge Index` in `decisions.md` to know what reference material exists; load the relevant file if your task needs it
 
 ## On every task — after completing the work
 
 **MANDATORY — do NOT sign off without completing these steps.**
 
-1. **Update `context.md`** — only if key files or architecture changed. Clear `## Current Task` if one exists. Keep it concise.
+1. **Update `context.md`** — only if key files or architecture changed. Clear `## Current Task` if one exists. Stay ≤ 30 lines — move deep detail to `knowledge/` if needed.
 2. **Append one line to `history.md`** — format: `- {DATE} — {one-sentence summary of what was done}`
 3. **Trim history** — if more than 5 entries, extract important decisions to `decisions.md`, then trim to 5
-4. **Update `decisions.md`** — only if a key architectural decision or non-obvious gotcha surfaced
-5. **Sign off** — `— {name}, {domain}`
+4. **Update `decisions.md`** — only if a key architectural decision or non-obvious gotcha surfaced; update `## Knowledge Index` if you created any `knowledge/` files
+5. **If you could not complete the task** — write `## Blocked` to `context.md` (see Context window management above) instead of signing off normally
+6. **Sign off** — `— {name}, {domain}`
 ```
 
 ### 3. Update `.claude/crew/roster.md`
@@ -344,7 +377,7 @@ These templates are referenced by the member's SKILL.md during first-task bootst
 
 ### Context template
 
-Keep this file under 50 lines. Only facts the member needs to start working — not documentation.
+Keep this file **≤ 30 lines**. Only facts the member needs to start working — not documentation. Deep reference material belongs in `knowledge/` files.
 
 ```markdown
 # {NAME} — {DOMAIN}
@@ -384,6 +417,11 @@ Evergreen knowledge only — things the member needs to avoid repeating mistakes
 ## Working With Me
 
 [Standing instructions from the user, added during 1-on-1s]
+
+## Knowledge Index
+
+| File | Contents |
+|------|----------|
 ```
 
 ---
